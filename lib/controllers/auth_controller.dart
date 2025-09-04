@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:to_do_list_app/routes/routes.dart';
 
@@ -11,24 +12,30 @@ class AuthController extends GetxController {
   void login() {
     // cek input kosong
     if (inputUsername.isEmpty || inputPassword.isEmpty) {
-      Get.snackbar(
-        "Error",
-        "Username dan Password harus diisi",
-        snackPosition: SnackPosition.BOTTOM,
+      Get.defaultDialog(
+        title: "Error",
+        middleText: "Username dan Password harus diisi",
+        textConfirm: "OK",
+        onConfirm: () => Get.back(),
       );
       return;
     }
 
+    // cek username & password
     if (inputUsername.value == username && inputPassword.value == password) {
+      // pindah ke dashboard
       Get.offNamed(AppRoute.dashboardPage);
       print("Login Berhasil");
     } else {
-      Get.snackbar(
-        "Login Gagal",
-        "Username atau password salah",
-        snackPosition: SnackPosition.BOTTOM,
+      // dialog gagal
+      Get.defaultDialog(
+        title: "Login Gagal",
+        middleText: "Username atau password salah",
+        textConfirm: "Coba Lagi",
+        onConfirm: () {
+          Get.back();
+        },
       );
-      inputPassword.value = ""; 
     }
   }
 }

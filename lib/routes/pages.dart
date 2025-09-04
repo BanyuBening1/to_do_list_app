@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:to_do_list_app/bindings/auth_binding.dart';
+import 'package:to_do_list_app/bindings/dashboard_binding.dart';
 import 'package:to_do_list_app/pages/dashboard_page.dart';
 import 'package:to_do_list_app/pages/login_page.dart';
 import 'package:to_do_list_app/routes/routes.dart';
@@ -14,7 +15,7 @@ class AppPages {
     GetPage(
       name: AppRoute.dashboardPage,
       page: () => DashboardPage(),
-      
+      binding: DashboardBinding()
     ),
   ];
 }

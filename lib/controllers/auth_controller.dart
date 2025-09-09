@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:to_do_list_app/routes/routes.dart';
 
@@ -10,7 +9,6 @@ class AuthController extends GetxController {
   final String password = "alip";
 
   void login() {
-    // cek input kosong
     if (inputUsername.isEmpty || inputPassword.isEmpty) {
       Get.defaultDialog(
         title: "Error",
@@ -23,11 +21,9 @@ class AuthController extends GetxController {
 
     // cek username & password
     if (inputUsername.value == username && inputPassword.value == password) {
-      // pindah ke dashboard
       Get.offNamed(AppRoute.dashboardPage);
       print("Login Berhasil");
     } else {
-      // dialog gagal
       Get.defaultDialog(
         title: "Login Gagal",
         middleText: "Username atau password salah",

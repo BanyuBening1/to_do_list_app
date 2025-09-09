@@ -7,7 +7,7 @@ import '../controllers/auth_controller.dart';
 class LoginPage extends StatelessWidget {
   LoginPage({super.key});
 
-  final AuthController authController = Get.put(AuthController());
+  final AuthController authController = Get.find<AuthController>();
 
   @override
   Widget build(BuildContext context) {

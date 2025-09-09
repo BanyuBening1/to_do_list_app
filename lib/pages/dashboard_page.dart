@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:to_do_list_app/controllers/dashboard_controller.dart';
-import 'home_page.dart';
-import 'history_page.dart';
-import 'profile_page.dart';
+import 'package:to_do_list_app/pages/home_page.dart';
+import 'package:to_do_list_app/pages/history_page.dart';
+import 'package:to_do_list_app/pages/profile_page.dart';
 
 class DashboardPage extends StatelessWidget {
   DashboardPage({super.key});
 
-  // Panggil controller
+  // Controller utama dashboard
   final DashboardController controller = Get.find<DashboardController>();
 
-  // Daftar halaman
+  // Daftar halaman bottom nav
   final List<Widget> pages = [HomePage(), HistoryPage(), ProfilePage()];
 
   @override

@@ -3,14 +3,16 @@ import 'package:get/get.dart';
 
 class HomeController extends GetxController {
   var todos = <Map<String, dynamic>>[].obs;
+  var history = <Map<String, dynamic>>[].obs;
+
   var filterPrioritas = "Semua".obs;
 
   void tambahTodo(Map<String, dynamic> todo) {
     todos.add({
-      'judul': todo['judul'] ?? '',
-      'deskripsi': todo['deskripsi'] ?? '',
-      'kategori': todo['kategori'] ?? 'Umum',
-      'prioritas': todo['prioritas'] ?? 'Rendah', // ambil sesuai input
+      'judul': todo['judul'],
+      'deskripsi': todo['deskripsi'],
+      'kategori': todo['kategori'],
+      'prioritas': todo['prioritas'],
       'selesai': false,
     });
   }
@@ -20,8 +22,10 @@ class HomeController extends GetxController {
   }
 
   void selesaikanTodo(int index) {
-    todos[index]['selesai'] = true;
-    todos.refresh();
+    final todo = todos[index];
+    todo['selesai'] = true;
+    history.add(todo); // pindah ke history
+    todos.removeAt(index); // hapus dari list aktif
   }
 
   Widget emptyMessage() {
@@ -31,6 +35,17 @@ class HomeController extends GetxController {
   }
 
   bool isTodoEmpty() => todos.isEmpty;
+
+  List<Map<String, dynamic>> getFilteredTodos() {
+    if (filterPrioritas.value == "Semua") {
+      return todos;
+    }
+    return todos.where((t) => t['prioritas'] == filterPrioritas.value).toList();
+  }
+
+  void changeFilter(String val) {
+    filterPrioritas.value = val;
+  }
 
   Color getPriorityColor(String prioritas) {
     switch (prioritas) {
@@ -43,16 +58,5 @@ class HomeController extends GetxController {
       default:
         return Colors.grey;
     }
-  }
-
-  List<Map<String, dynamic>> getFilteredTodos() {
-    if (filterPrioritas.value == "Semua") return todos;
-    return todos
-        .where((todo) => todo['prioritas'] == filterPrioritas.value)
-        .toList();
-  }
-
-  void changeFilter(String value) {
-    filterPrioritas.value = value;
   }
 }

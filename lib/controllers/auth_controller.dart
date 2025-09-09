@@ -21,7 +21,7 @@ class AuthController extends GetxController {
 
     // cek username & password
     if (inputUsername.value == username && inputPassword.value == password) {
-      Get.offNamed(AppRoute.dashboardPage);
+      Get.offAllNamed(AppRoute.dashboardPage);
       print("Login Berhasil");
     } else {
       Get.defaultDialog(

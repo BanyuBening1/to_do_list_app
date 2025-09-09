@@ -4,8 +4,8 @@ import 'package:to_do_list_app/controllers/home_controller.dart';
 import 'package:to_do_list_app/routes/routes.dart';
 
 class HomePage extends StatelessWidget {
-  // final HomeController controller = Get.find<HomeController>();
-  final HomeController controller = Get.put(HomeController());
+  final HomeController controller = Get.find<HomeController>();
+  // final HomeController controller = Get.put(HomeController());
 
   HomePage({super.key});
 

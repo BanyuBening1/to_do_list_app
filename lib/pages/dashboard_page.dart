@@ -12,10 +12,7 @@ class DashboardPage extends StatelessWidget {
   final DashboardController controller = Get.find<DashboardController>();
 
   // Daftar halaman
-  final List<Widget> pages = const [
-    HomePage(), 
-    HistoryPage(), 
-    ProfilePage()];
+  final List<Widget> pages = [HomePage(), HistoryPage(), ProfilePage()];
 
   @override
   Widget build(BuildContext context) {

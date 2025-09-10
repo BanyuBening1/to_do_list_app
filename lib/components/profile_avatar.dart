@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class ProfileAvatar extends StatelessWidget {
-  final String imagePath; // path dari asset
+  final String imagePath;
   final String name;
   final String email;
 
@@ -17,17 +17,26 @@ class ProfileAvatar extends StatelessWidget {
     return Column(
       children: [
         CircleAvatar(
-          radius: 50,
-          backgroundImage: AssetImage(imagePath), // pakai AssetImage
+          radius: 55,
+          backgroundColor: const Color(0xFF708993),
+          backgroundImage: AssetImage(imagePath),
         ),
-        const SizedBox(height: 10),
+        const SizedBox(height: 12),
         Text(
           name,
-          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          style: const TextStyle(
+            fontSize: 22,
+            fontWeight: FontWeight.bold,
+            color: Colors.black87,
+          ),
         ),
+        const SizedBox(height: 4),
         Text(
           email,
-          style: const TextStyle(fontSize: 14, color: Colors.grey),
+          style: TextStyle(
+            fontSize: 14,
+            color: Colors.grey.shade600,
+          ),
         ),
       ],
     );

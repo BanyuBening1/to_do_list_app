@@ -17,12 +17,12 @@ class AppPages {
     GetPage(
       name: AppRoute.dashboardPage,
       page: () => DashboardPage(),
-      binding: DashboardBinding(),
+      
     ),
     GetPage(
       name: AppRoute.addPage,
       page: () => AddPage(),
-      binding: DashboardBinding(),
+      
     ),
     GetPage(name: AppRoute.profilePage, page: () => ProfilePage()),
   ];

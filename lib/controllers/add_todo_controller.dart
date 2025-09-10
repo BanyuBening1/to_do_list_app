@@ -6,13 +6,15 @@ class AddTodoController extends GetxController {
   var deskripsi = ''.obs;
   var kategori = ''.obs;
   var priority = ''.obs;
+  var dueDate = Rxn<DateTime>();
 
   void simpanTodo() {
-    if (judul.isEmpty || deskripsi.isEmpty) {
-      Get.defaultDialog(
-        title: "Error",
-        middleText: "Judul dan deskripsi tidak boleh kosong!",
-      );
+    if (judul.isEmpty ||
+        deskripsi.isEmpty ||
+        kategori.isEmpty ||
+        priority.isEmpty ||
+        dueDate.value == null) {
+      Get.defaultDialog(title: "Error", middleText: "Semua field wajib diisi!");
       return;
     }
 
@@ -20,12 +22,15 @@ class AddTodoController extends GetxController {
       "judul": judul.value,
       "deskripsi": deskripsi.value,
       "kategori": kategori.value,
-      "prioritas": priority.value, 
+      "prioritas": priority.value,
+      "dueDate": dueDate.value,
+      "selesai": false,
     };
 
-    
-    Get.find<HomeController>().tambahTodo(newTodo);
+    final home = Get.find<HomeController>();
+    print("Tambah todo ke HomeController hash: ${home.hashCode}"); // 🔍 debug
+    home.tambahTodo(newTodo);
 
-    Get.back(); 
+    Get.back();
   }
 }

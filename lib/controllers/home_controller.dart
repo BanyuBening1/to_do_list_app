@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 class HomeController extends GetxController {
   var todos = <Map<String, dynamic>>[].obs;
@@ -7,12 +8,24 @@ class HomeController extends GetxController {
 
   var filterPrioritas = "Semua".obs;
 
+  final dateFormat = DateFormat('dd-MM-yyyy');
+
+  @override
+  void onInit() {
+    super.onInit();
+    todos.refresh(); 
+    print(
+      "HomeController created: $hashCode",
+    ); // paksa refresh saat controller dibuat
+  }
+
   void tambahTodo(Map<String, dynamic> todo) {
     todos.add({
       'judul': todo['judul'],
       'deskripsi': todo['deskripsi'],
       'kategori': todo['kategori'],
       'prioritas': todo['prioritas'],
+      'dueDate': todo['dueDate'], // ✅ wajib simpan di sini
       'selesai': false,
     });
   }
@@ -24,8 +37,25 @@ class HomeController extends GetxController {
   void selesaikanTodo(int index) {
     final todo = todos[index];
     todo['selesai'] = true;
-    history.add(todo); 
-    todos.removeAt(index); 
+    history.add(todo);
+    todos.removeAt(index);
+  }
+
+  String? formatDueDate(dynamic rawDate) {
+    if (rawDate == null) return null;
+
+    DateTime? parsed;
+    if (rawDate is DateTime) {
+      parsed = rawDate;
+    } else if (rawDate is String) {
+      try {
+        parsed = DateTime.parse(rawDate);
+      } catch (_) {
+        return null;
+      }
+    }
+
+    return parsed != null ? dateFormat.format(parsed) : null;
   }
 
   Widget emptyMessage() {

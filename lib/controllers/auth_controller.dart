@@ -19,7 +19,7 @@ class AuthController extends GetxController {
       return;
     }
 
-    // cek username & password
+    
     if (inputUsername.value == username && inputPassword.value == password) {
       Get.offAllNamed(AppRoute.dashboardPage);
       print("Login Berhasil");

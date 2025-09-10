@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:to_do_list_app/components/app_color.dart';
 
 class CustomDropdown extends StatelessWidget {
   final String hintText;
@@ -20,14 +21,23 @@ class CustomDropdown extends StatelessWidget {
       value: value,
       decoration: InputDecoration(
         hintText: hintText,
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+        filled: true, 
+        fillColor: AppColors.surface, 
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide.none, 
+        ),
         contentPadding: const EdgeInsets.symmetric(
           horizontal: 12,
           vertical: 14,
         ),
       ),
+      dropdownColor:AppColors.background, 
       items: items
-          .map((item) => DropdownMenuItem(value: item, child: Text(item)))
+          .map((item) => DropdownMenuItem(
+                value: item,
+                child: Text(item),
+              ))
           .toList(),
       onChanged: onChanged,
     );

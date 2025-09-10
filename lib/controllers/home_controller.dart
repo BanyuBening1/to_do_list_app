@@ -24,8 +24,8 @@ class HomeController extends GetxController {
   void selesaikanTodo(int index) {
     final todo = todos[index];
     todo['selesai'] = true;
-    history.add(todo); // pindah ke history
-    todos.removeAt(index); // hapus dari list aktif
+    history.add(todo); 
+    todos.removeAt(index); 
   }
 
   Widget emptyMessage() {

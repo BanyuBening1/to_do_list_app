@@ -23,7 +23,7 @@ class AddTodoController extends GetxController {
       "prioritas": priority.value, 
     };
 
-    // kirim ke HomeController
+    
     Get.find<HomeController>().tambahTodo(newTodo);
 
     Get.back(); 

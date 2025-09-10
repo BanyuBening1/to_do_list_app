@@ -22,7 +22,7 @@ class AppPages {
     GetPage(
       name: AppRoute.addPage,
       page: () => AddPage(),
-      
+      binding: DashboardBinding()
     ),
     GetPage(name: AppRoute.profilePage, page: () => ProfilePage()),
   ];

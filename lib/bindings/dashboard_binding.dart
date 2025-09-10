@@ -7,10 +7,11 @@ import 'package:to_do_list_app/controllers/home_controller.dart';
 class DashboardBinding extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut<DashboardController>(() => DashboardController());
-    Get.lazyPut<HomeController>(() => HomeController());
-    Get.lazyPut<AddTodoController>(() => AddTodoController());
+    // Get.put<HomeController>(HomeController(), permanent: true);
+    Get.lazyPut<DashboardController>(() => DashboardController(), fenix: true);
+    Get.lazyPut<HomeController>(() => HomeController(), fenix: true);
+    Get.lazyPut<AddTodoController>(() => AddTodoController(), fenix: true);
     Get.lazyPut<HistoryController>(() => HistoryController(), fenix: true);
-
   }
 }
+

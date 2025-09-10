@@ -3,30 +3,29 @@ import 'package:get/get.dart';
 import 'package:to_do_list_app/components/app_color.dart';
 import 'package:to_do_list_app/controllers/home_controller.dart';
 import 'package:to_do_list_app/routes/routes.dart';
+import 'package:intl/intl.dart';
 
 class HomePage extends StatelessWidget {
   final HomeController controller = Get.find<HomeController>();
 
   HomePage({super.key});
 
+  final DateFormat dateFormat = DateFormat('dd-MM-yyyy');
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      
       appBar: AppBar(
         title: const Text("Daftar Todo"),
         centerTitle: true,
         backgroundColor: AppColors.secondary,
         elevation: 4,
       ),
-
       body: Container(
-        
-        decoration: const BoxDecoration(
-        color: AppColors.background
-        ),
+        decoration: const BoxDecoration(color: AppColors.background),
         child: Column(
           children: [
+            // Dropdown filter prioritas
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Obx(
@@ -35,14 +34,14 @@ class HomePage extends StatelessWidget {
                   decoration: InputDecoration(
                     labelText: "Filter Prioritas",
                     labelStyle: const TextStyle(
-                      color: AppColors.secondary, 
+                      color: AppColors.secondary,
                       fontWeight: FontWeight.bold,
                     ),
-                    filled: true, 
+                    filled: true,
                     fillColor: AppColors.surface,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
-                      borderSide: BorderSide.none, 
+                      borderSide: BorderSide.none,
                     ),
                   ),
                   dropdownColor: AppColors.background,
@@ -59,10 +58,16 @@ class HomePage extends StatelessWidget {
               ),
             ),
 
+            // Daftar Todo
             Expanded(
               child: Obx(() {
                 if (controller.isTodoEmpty()) {
-                  return controller.emptyMessage();
+                  return const Center(
+                    child: Text(
+                      "Belum ada todo",
+                      style: TextStyle(fontSize: 16),
+                    ),
+                  );
                 }
 
                 final todos = controller.getFilteredTodos();
@@ -76,7 +81,6 @@ class HomePage extends StatelessWidget {
                     );
 
                     return Card(
-                      
                       color: Colors.white.withOpacity(0.9),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(16),
@@ -92,7 +96,7 @@ class HomePage extends StatelessWidget {
                           style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
-                            color: AppColors.primary, 
+                            color: AppColors.primary,
                             decoration: todo['selesai'] == true
                                 ? TextDecoration.lineThrough
                                 : TextDecoration.none,
@@ -127,6 +131,16 @@ class HomePage extends StatelessWidget {
                                     color: priorityColor,
                                   ),
                                 ),
+                                if (todo['dueDate'] != null &&
+                                    todo['dueDate'] is DateTime)
+                                  Text(
+                                    "Due: ${controller.dateFormat.format(todo['dueDate'])}", // ✅ pakai dari controller
+                                    style: const TextStyle(
+                                      fontSize: 12,
+                                      color: Colors.redAccent,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
                               ],
                             ),
                           ],
@@ -140,16 +154,14 @@ class HomePage extends StatelessWidget {
                                 Icons.check_circle,
                                 color: Colors.green,
                               ),
-                              onPressed: () => controller.selesaikanTodo(
-                                controller.todos.indexOf(todo),
-                              ),
+                              onPressed: () => controller.selesaikanTodo(index),
                             ),
                             IconButton(
-                              icon: const Icon(Icons.delete,
-                                  color: Color(0xFFF08787)), 
-                              onPressed: () => controller.hapusTodo(
-                                controller.todos.indexOf(todo),
+                              icon: const Icon(
+                                Icons.delete,
+                                color: Color(0xFFF08787),
                               ),
+                              onPressed: () => controller.hapusTodo(index),
                             ),
                           ],
                         ),
@@ -162,13 +174,12 @@ class HomePage extends StatelessWidget {
           ],
         ),
       ),
-
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Get.toNamed(AppRoute.addPage);
         },
-        backgroundColor: AppColors.primary, 
-        child: const Icon(Icons.add, color: Colors.white), 
+        backgroundColor: AppColors.primary,
+        child: const Icon(Icons.add, color: Colors.white),
       ),
     );
   }

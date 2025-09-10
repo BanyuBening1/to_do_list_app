@@ -13,64 +13,71 @@ class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.background,
       body: Container(
-        width: double.infinity,
-        height: double.infinity,
         decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [Color(0xFFE0E0E0), Color(0xFFF5F5F5)],
+          ),
         ),
         child: SafeArea(
           child: Center(
             child: SingleChildScrollView(
               padding: const EdgeInsets.all(24.0),
-              child: Card(
-                elevation: 6,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20)),
-                color: Colors.white.withOpacity(0.9),
-                child: Padding(
-                  padding: const EdgeInsets.all(28.0),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      const Text(
-                        "Login",
-                        style: TextStyle(
-                          fontSize: 28,
-                          fontWeight: FontWeight.bold,
-                          color: AppColors.primary, 
-                        ),
-                      ),
-                      const SizedBox(height: 40),
-
-                      
-                      CustomTextField(
-                        hintText: "Username",
-                        icon: Icons.person,
-                        onChanged: (value) =>
-                            authController.inputUsername.value = value,
-                      ),
-                      const SizedBox(height: 20),
-
-                      
-                      CustomTextField(
-                        hintText: "Password",
-                        icon: Icons.lock,
-                        obscureText: true,
-                        onChanged: (value) =>
-                            authController.inputPassword.value = value,
-                      ),
-                      const SizedBox(height: 30),
-
-                      
-                      CustomButton(
-                        text: "Login",
-                        onPressed: () => authController.login(),
-                        textColor: AppColors.textDark,
-                      ),
-                    ],
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  // Logo langsung tanpa background putih
+                  SizedBox(
+                    width: 80,
+                    height: 80,
+                    child: Image.asset(
+                      'assets/images/completed-task.png',
+                      fit: BoxFit.contain,
+                    ),
                   ),
-                ),
+                  const SizedBox(height: 40),
+
+                  const Text(
+                    "Dayflow",
+                    style: TextStyle(
+                      fontSize: 32,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.primary,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+
+                  const Text(
+                    "Silakan masuk untuk melanjutkan",
+                    style: TextStyle(fontSize: 16, color: Colors.grey),
+                  ),
+                  const SizedBox(height: 30),
+
+                  CustomTextField(
+                    hintText: "Username",
+                    icon: Icons.person,
+                    onChanged: (value) =>
+                        authController.inputUsername.value = value,
+                  ),
+                  const SizedBox(height: 20),
+
+                  CustomTextField(
+                    hintText: "Password",
+                    icon: Icons.lock,
+                    obscureText: true,
+                    onChanged: (value) =>
+                        authController.inputPassword.value = value,
+                  ),
+                  const SizedBox(height: 30),
+
+                  CustomButton(
+                    text: "Login",
+                    onPressed: () => authController.login(),
+                    textColor: Colors.white,
+                  ),
+                ],
               ),
             ),
           ),

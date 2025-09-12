@@ -81,21 +81,36 @@ class HistoryPage extends StatelessWidget {
                       ),
                     ),
                   ),
-                  trailing: Container(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-                    decoration: BoxDecoration(
-                      color: priorityColor.withOpacity(0.2), 
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Text(
-                      todo['prioritas'],
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: AppColors.primary,
-                        fontSize: 12,
+                   trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                        decoration: BoxDecoration(
+                          color: priorityColor.withOpacity(0.2),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Text(
+                          todo['prioritas'],
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.primary,
+                            fontSize: 12,
+                          ),
+                        ),
                       ),
-                    ),
+                      IconButton(
+                        icon: const Icon(Icons.delete, color: Color(0xFFF08787)),
+                        onPressed: () {
+                          controller.deleteHistory(index);
+                          Get.snackbar(
+                            "Terhapus",
+                            "History '${todo['judul']}' dihapus",
+                            snackPosition: SnackPosition.BOTTOM,
+                          );
+                        },
+                      ),
+                    ],
                   ),
                 ),
               );

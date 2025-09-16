@@ -3,14 +3,13 @@ import 'package:get/get.dart';
 import 'package:to_do_list_app/components/app_color.dart';
 import 'package:to_do_list_app/controllers/home_controller.dart';
 import 'package:to_do_list_app/routes/routes.dart';
-import 'package:intl/intl.dart';
+
 
 class HomePage extends StatelessWidget {
   final HomeController controller = Get.find<HomeController>();
 
   HomePage({super.key});
 
-  final DateFormat dateFormat = DateFormat('dd-MM-yyyy');
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +64,11 @@ class HomePage extends StatelessWidget {
                   return const Center(
                     child: Text(
                       "Belum ada todo",
-                      style: TextStyle(fontSize: 16),
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.textDark,
+                      ),
                     ),
                   );
                 }
@@ -134,7 +137,7 @@ class HomePage extends StatelessWidget {
                                 if (todo['dueDate'] != null &&
                                     todo['dueDate'] is DateTime)
                                   Text(
-                                    "Due: ${controller.dateFormat.format(todo['dueDate'])}", // ✅ pakai dari controller
+                                    "Due: ${controller.dateFormat.format(todo['dueDate'])}", 
                                     style: const TextStyle(
                                       fontSize: 12,
                                       color: Colors.redAccent,

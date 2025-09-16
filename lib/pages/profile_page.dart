@@ -54,7 +54,7 @@ class ProfilePage extends StatelessWidget {
                     borderRadius: BorderRadius.circular(12)),
                 child: const ProfileItem(
                   icon: Icons.location_on,
-                  text: "Jakarta, Indonesia",
+                  text: "Kudus, Indonesia",
                 ),
               ),
               Card(
@@ -63,7 +63,7 @@ class ProfilePage extends StatelessWidget {
                     borderRadius: BorderRadius.circular(12)),
                 child: const ProfileItem(
                   icon: Icons.work,
-                  text: "Flutter Developer",
+                  text: "Pelajar",
                 ),
               ),
               const SizedBox(height: 25),

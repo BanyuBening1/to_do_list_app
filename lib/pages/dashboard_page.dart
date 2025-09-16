@@ -9,10 +9,8 @@ import 'package:to_do_list_app/pages/profile_page.dart';
 class DashboardPage extends StatelessWidget {
   DashboardPage({super.key});
 
-  
   final DashboardController controller = Get.find<DashboardController>();
 
-  
   final List<Widget> pages = [HomePage(), HistoryPage(), ProfilePage()];
 
   @override
@@ -21,28 +19,21 @@ class DashboardPage extends StatelessWidget {
       () => Scaffold(
         body: pages[controller.selectedIndex.value],
 
-        
         bottomNavigationBar: BottomNavigationBar(
           currentIndex: controller.selectedIndex.value,
           onTap: controller.changeTabIndex,
-          backgroundColor:AppColors.secondary,
-          selectedItemColor: const Color(0xFFFEE2AD), 
-          unselectedItemColor: Colors.white.withOpacity(0.7), 
-          type: BottomNavigationBarType.fixed, 
+          backgroundColor: AppColors.secondary,
+          selectedItemColor: const Color(0xFFE6CB8C), // versi lebih gelap
+          unselectedItemColor: Colors.white.withOpacity(0.7),
+          type: BottomNavigationBarType.fixed,
           elevation: 8,
           items: const [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: "Home",
-            ),
+            BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
             BottomNavigationBarItem(
               icon: Icon(Icons.history),
               label: "History",
             ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.person),
-              label: "Profile",
-            ),
+            BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profile"),
           ],
         ),
       ),

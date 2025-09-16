@@ -87,14 +87,14 @@ class HistoryPage extends StatelessWidget {
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                         decoration: BoxDecoration(
-                          color: priorityColor.withOpacity(0.2),
+                          color: priorityColor.withOpacity(0.6),
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: Text(
                           todo['prioritas'],
                           style: const TextStyle(
                             fontWeight: FontWeight.bold,
-                            color: AppColors.primary,
+                            color: Colors.black87,
                             fontSize: 12,
                           ),
                         ),

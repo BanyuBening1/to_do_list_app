@@ -18,7 +18,7 @@ class HistoryPage extends StatelessWidget {
         title: const Text("History"),
         centerTitle: true,
         backgroundColor:AppColors.secondary, 
-        foregroundColor: AppColors.textDark, 
+        foregroundColor: AppColors.textLight, 
         elevation: 4,
       ),
 
@@ -99,17 +99,45 @@ class HistoryPage extends StatelessWidget {
                           ),
                         ),
                       ),
-                      IconButton(
-                        icon: const Icon(Icons.delete, color: Color(0xFFF08787)),
-                        onPressed: () {
-                          controller.deleteHistory(index);
-                          Get.snackbar(
-                            "Terhapus",
-                            "History '${todo['judul']}' dihapus",
-                            snackPosition: SnackPosition.BOTTOM,
-                          );
-                        },
-                      ),
+                  IconButton(
+                    icon: const Icon(Icons.delete, color: Color(0xFFF08787)),
+                    onPressed: () {
+                      Get.dialog(
+                        AlertDialog(
+                          title: const Text(
+                            "Konfirmasi",
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          content: Text("Yakin ingin menghapus '${todo['judul']}' dari history?"),
+                          actions: [
+                            TextButton(
+                              onPressed: () {
+                                Get.back(); 
+                              },
+                              child: const Text("Batal"),
+                            ),
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.redAccent,
+                                foregroundColor: Colors.white,
+                              ),
+                              onPressed: () {
+                                controller.deleteHistory(index);
+                                Get.back(); 
+                                Get.snackbar(
+                                  "Terhapus",
+                                  "History '${todo['judul']}' dihapus",
+                                  snackPosition: SnackPosition.BOTTOM,
+                                );
+                              },
+                              child: const Text("Ya, Hapus"),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  ),
+
                     ],
                   ),
                 ),

@@ -87,7 +87,7 @@ class AddPage extends StatelessWidget {
                     style: TextStyle(
                       color: controller.dueDate.value == null
                           ? Colors.grey
-                          : AppColors.primary,
+                          : AppColors.textDark,
                     ),
                   ),
                   onTap: () async {

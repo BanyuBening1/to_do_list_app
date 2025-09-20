@@ -13,8 +13,8 @@ class ProfileItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      leading: Icon(icon, color: Colors.blue),
-      title: Text(text, style: const TextStyle(fontSize: 16)),
+      leading: Icon(icon, color: Colors.white),
+      title: Text(text, style: const TextStyle(fontSize: 16,color: Colors.white,)),
     );
   }
 }

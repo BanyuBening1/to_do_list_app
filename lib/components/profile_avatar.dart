@@ -27,7 +27,7 @@ class ProfileAvatar extends StatelessWidget {
           style: const TextStyle(
             fontSize: 22,
             fontWeight: FontWeight.bold,
-            color: Colors.black87,
+            color: Colors.white,
           ),
         ),
         const SizedBox(height: 4),
@@ -35,7 +35,7 @@ class ProfileAvatar extends StatelessWidget {
           email,
           style: TextStyle(
             fontSize: 14,
-            color: Colors.grey.shade600,
+            color: Colors.white,
           ),
         ),
       ],

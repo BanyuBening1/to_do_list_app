@@ -22,9 +22,10 @@ class DashboardPage extends StatelessWidget {
         bottomNavigationBar: BottomNavigationBar(
           currentIndex: controller.selectedIndex.value,
           onTap: controller.changeTabIndex,
-          backgroundColor: AppColors.secondary,
-          selectedItemColor: const Color(0xFFE6CB8C), // versi lebih gelap
-          unselectedItemColor: Colors.white.withOpacity(0.7),
+          backgroundColor: AppColors.secondary, 
+          selectedItemColor: AppColors.primary, 
+          unselectedItemColor: Colors.white, 
+
           type: BottomNavigationBarType.fixed,
           elevation: 8,
           items: const [

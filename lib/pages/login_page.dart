@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:to_do_list_app/components/app_color.dart';
 import 'package:to_do_list_app/components/custom_button.dart';
 import 'package:to_do_list_app/components/custom_textfield.dart';
 import '../controllers/auth_controller.dart';
@@ -28,7 +27,7 @@ class LoginPage extends StatelessWidget {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  // Logo
+                  
                   Container(
                     width: 80,
                     height: 80,
@@ -38,7 +37,7 @@ class LoginPage extends StatelessWidget {
                     ),
                   ),
 
-                  // Title
+                  
                   const Padding(
                     padding: EdgeInsets.only(top: 40, bottom: 8),
                     child: Text(
@@ -46,7 +45,7 @@ class LoginPage extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 32,
                         fontWeight: FontWeight.bold,
-                        color: AppColors.primary,
+                        color: Colors.black87,
                       ),
                     ),
                   ),
@@ -56,7 +55,7 @@ class LoginPage extends StatelessWidget {
                     style: TextStyle(fontSize: 16, color: Colors.grey),
                   ),
 
-                  // Username
+                  
                   Padding(
                     padding: const EdgeInsets.only(top: 30),
                     child: CustomTextField(
@@ -67,7 +66,7 @@ class LoginPage extends StatelessWidget {
                     ),
                   ),
 
-                  // Password
+                  
                   Padding(
                     padding: const EdgeInsets.only(top: 20),
                     child: CustomTextField(
@@ -79,7 +78,7 @@ class LoginPage extends StatelessWidget {
                     ),
                   ),
 
-                  // Button
+                  
                   Padding(
                     padding: const EdgeInsets.only(top: 30),
                     child: CustomButton(

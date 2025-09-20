@@ -10,14 +10,7 @@ class HomeController extends GetxController {
 
   final dateFormat = DateFormat('dd-MM-yyyy');
 
-  @override
-  void onInit() {
-    super.onInit();
-    todos.refresh(); 
-    print(
-      "HomeController created: $hashCode",
-    ); // paksa refresh saat controller dibuat
-  }
+ 
 
   void tambahTodo(Map<String, dynamic> todo) {
     todos.add({
@@ -25,7 +18,7 @@ class HomeController extends GetxController {
       'deskripsi': todo['deskripsi'],
       'kategori': todo['kategori'],
       'prioritas': todo['prioritas'],
-      'dueDate': todo['dueDate'], // ✅ wajib simpan di sini
+      'dueDate': todo['dueDate'],  
       'selesai': false,
     });
   }
@@ -58,11 +51,7 @@ class HomeController extends GetxController {
     return parsed != null ? dateFormat.format(parsed) : null;
   }
 
-  Widget emptyMessage() {
-    return const Center(
-      child: Text("Belum ada todo", style: TextStyle(fontSize: 16)),
-    );
-  }
+
 
   bool isTodoEmpty() => todos.isEmpty;
 

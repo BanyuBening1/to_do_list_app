@@ -18,6 +18,7 @@ class HomePage extends StatelessWidget {
         title: const Text("Daftar Todo"),
         centerTitle: true,
         backgroundColor: AppColors.secondary,
+        foregroundColor: AppColors.textLight,
         elevation: 4,
       ),
       body: Container(
@@ -25,34 +26,61 @@ class HomePage extends StatelessWidget {
         child: Column(
           children: [
             // Dropdown filter prioritas
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Obx(
-                () => DropdownButtonFormField<String>(
-                  value: controller.filterPrioritas.value,
-                  decoration: InputDecoration(
-                    labelText: "Filter Prioritas",
-                    labelStyle: const TextStyle(
-                      color: AppColors.secondary,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    filled: true,
-                    fillColor: AppColors.surface,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      borderSide: BorderSide.none,
+           Padding(
+              padding: const EdgeInsets.only(top: 16, left: 12, right: 12), // jarak dari AppBar lebih besar
+              child: Align(
+                alignment: Alignment.centerLeft, // biar gak full width
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(
+                    maxWidth: 200, // atur lebar maksimum dropdown
+                  ),
+                  child: Obx(
+                    () => DropdownButtonFormField<String>(
+                      value: controller.filterPrioritas.value,
+                      isDense: true,
+                      decoration: InputDecoration(
+                        labelText: "Filter Prioritas",
+                        labelStyle: const TextStyle(
+                          color: AppColors.secondary,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 13,
+                        ),
+                        filled: true,
+                        fillColor: AppColors.surface,
+                        contentPadding:
+                            const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide(
+                            color: AppColors.secondary.withOpacity(0.6),
+                          ),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide(
+                            color: AppColors.secondary.withOpacity(0.6),
+                          ),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: const BorderSide(
+                            color: AppColors.secondary,
+                            width: 2,
+                          ),
+                        ),
+                      ),
+                      dropdownColor: AppColors.background,
+                      items: const [
+                        DropdownMenuItem(value: "Semua", child: Text("Semua")),
+                        DropdownMenuItem(value: "Tinggi", child: Text("Tinggi")),
+                        DropdownMenuItem(value: "Sedang", child: Text("Sedang")),
+                        DropdownMenuItem(value: "Rendah", child: Text("Rendah")),
+                      ],
+                      onChanged: (val) {
+                        if (val != null) controller.changeFilter(val);
+                      },
                     ),
                   ),
-                  dropdownColor: AppColors.background,
-                  items: const [
-                    DropdownMenuItem(value: "Semua", child: Text("Semua")),
-                    DropdownMenuItem(value: "Tinggi", child: Text("Tinggi")),
-                    DropdownMenuItem(value: "Sedang", child: Text("Sedang")),
-                    DropdownMenuItem(value: "Rendah", child: Text("Rendah")),
-                  ],
-                  onChanged: (val) {
-                    if (val != null) controller.changeFilter(val);
-                  },
                 ),
               ),
             ),
@@ -61,14 +89,27 @@ class HomePage extends StatelessWidget {
             Expanded(
               child: Obx(() {
                 if (controller.isTodoEmpty()) {
-                  return const Center(
-                    child: Text(
-                      "Belum ada todo",
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: AppColors.textDark,
-                      ),
+                  return Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Icon(Icons.task_alt, size: 80, color: Colors.grey),
+                        const SizedBox(height: 12),
+                        const Text(
+                          "Belum ada todo",
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.textDark,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        const Text(
+                          "Tambahkan tugas baru dengan menekan tombol +",
+                          style: TextStyle(fontSize: 13, color: Colors.grey),
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
                     ),
                   );
                 }
@@ -134,16 +175,25 @@ class HomePage extends StatelessWidget {
                                     color: priorityColor,
                                   ),
                                 ),
-                                if (todo['dueDate'] != null &&
-                                    todo['dueDate'] is DateTime)
-                                  Text(
-                                    "Due: ${controller.dateFormat.format(todo['dueDate'])}", 
-                                    style: const TextStyle(
-                                      fontSize: 12,
-                                      color: Colors.redAccent,
-                                      fontWeight: FontWeight.w500,
-                                    ),
+                                if (todo['dueDate'] != null && todo['dueDate'] is DateTime)
+                                  Row(
+                                    children: [
+                                      const Icon(
+                                        Icons.calendar_today,
+                                        size: 14,
+                                        color: Colors.grey,
+                                      ),
+                                      const SizedBox(width: 4),
+                                      Text(
+                                        controller.dateFormat.format(todo['dueDate']),
+                                        style: const TextStyle(
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                    ],
                                   ),
+
                               ],
                             ),
                           ],
@@ -164,8 +214,41 @@ class HomePage extends StatelessWidget {
                                 Icons.delete,
                                 color: Color(0xFFF08787),
                               ),
-                              onPressed: () => controller.hapusTodo(index),
+                              onPressed: () {
+                                Get.dialog(
+                                  AlertDialog(
+                                    title: const Text(
+                                      "Konfirmasi",
+                                      style: TextStyle(fontWeight: FontWeight.bold),
+                                    ),
+                                    content: Text("Yakin ingin menghapus todo '${todo['judul']}'?"),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () => Get.back(), 
+                                        child: const Text("Batal"),
+                                      ),
+                                      ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor: Colors.redAccent,
+                                          foregroundColor: Colors.white,
+                                        ),
+                                        onPressed: () {
+                                          controller.hapusTodo(index);
+                                          Get.back(); 
+                                          Get.snackbar(
+                                            "Terhapus",
+                                            "Todo '${todo['judul']}' dihapus",
+                                            snackPosition: SnackPosition.BOTTOM,
+                                          );
+                                        },
+                                        child: const Text("Ya, Hapus"),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              },
                             ),
+
                           ],
                         ),
                       ),

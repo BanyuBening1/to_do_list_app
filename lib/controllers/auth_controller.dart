@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:to_do_list_app/routes/routes.dart';
 
 class AuthController extends GetxController {
@@ -8,7 +9,7 @@ class AuthController extends GetxController {
   final String username = "banyu";
   final String password = "alip";
 
-  void login() {
+  login() async {
     if (inputUsername.isEmpty || inputPassword.isEmpty) {
       Get.defaultDialog(
         title: "Error",
@@ -19,15 +20,16 @@ class AuthController extends GetxController {
       return;
     }
 
-    
     if (inputUsername.value == username && inputPassword.value == password) {
+      final prefs = await SharedPreferences.getInstance();
+      prefs.setString("username", inputUsername.value);
       Get.offAllNamed(AppRoute.dashboardPage);
       print("Login Berhasil");
     } else {
       Get.defaultDialog(
         title: "Login Gagal",
         middleText: "Username atau password salah",
-        textConfirm: "Coba Lagi",
+        textConfirm: "Ok",
         onConfirm: () {
           Get.back();
         },

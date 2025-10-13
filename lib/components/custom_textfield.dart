@@ -5,6 +5,7 @@ class CustomTextField extends StatelessWidget {
   final String hintText;
   final bool obscureText;
   final IconData icon;
+  final TextEditingController? controller;
   final ValueChanged<String>? onChanged;
 
   const CustomTextField({
@@ -12,23 +13,25 @@ class CustomTextField extends StatelessWidget {
     required this.hintText,
     this.obscureText = false,
     required this.icon,
+    this.controller,
     this.onChanged,
   });
 
   @override
   Widget build(BuildContext context) {
     return TextField(
+      controller: controller,
       obscureText: obscureText,
       onChanged: onChanged,
       decoration: InputDecoration(
-        prefixIcon: Icon(icon, color:AppColors.secondary),
+        prefixIcon: Icon(icon, color: AppColors.secondary),
         hintText: hintText,
         filled: true,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+        contentPadding: const EdgeInsets.symmetric(
+          vertical: 15,
+          horizontal: 10,
         ),
-        contentPadding:
-            const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
       ),
     );
   }

@@ -4,6 +4,7 @@ import 'package:to_do_list_app/bindings/dashboard_binding.dart';
 import 'package:to_do_list_app/bindings/splash_binding.dart';
 import 'package:to_do_list_app/pages/add_page.dart';
 import 'package:to_do_list_app/pages/dashboard_page.dart';
+import 'package:to_do_list_app/pages/edit_page.dart';
 import 'package:to_do_list_app/pages/login_page.dart';
 import 'package:to_do_list_app/pages/profile_page.dart';
 import 'package:to_do_list_app/pages/splashscreen_page.dart';
@@ -30,6 +31,11 @@ class AppPages {
       name: AppRoute.splashPage,
       page: () => SplashscreenPage(),
       binding: SplashBinding()
+    ),
+    GetPage(
+      name: AppRoute.editPage,
+      page: () => EditPage(),
+      binding: DashboardBinding()
     ),
     GetPage(name: AppRoute.profilePage, page: () => ProfilePage()),
   ];

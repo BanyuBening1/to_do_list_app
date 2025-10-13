@@ -6,4 +6,5 @@ class AppRoute {
   static const String homePage = "/homePage";
   static const String historyPage = "/historyPage";
   static const String splashPage = "/splashPage";
+  static const String editPage = "/editPage";
 }

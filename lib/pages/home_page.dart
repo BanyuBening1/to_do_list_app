@@ -4,12 +4,10 @@ import 'package:to_do_list_app/components/app_color.dart';
 import 'package:to_do_list_app/controllers/home_controller.dart';
 import 'package:to_do_list_app/routes/routes.dart';
 
-
 class HomePage extends StatelessWidget {
   final HomeController controller = Get.find<HomeController>();
 
   HomePage({super.key});
-
 
   @override
   Widget build(BuildContext context) {
@@ -26,8 +24,12 @@ class HomePage extends StatelessWidget {
         child: Column(
           children: [
             // Dropdown filter prioritas
-           Padding(
-              padding: const EdgeInsets.only(top: 16, left: 12, right: 12), // jarak dari AppBar lebih besar
+            Padding(
+              padding: const EdgeInsets.only(
+                top: 16,
+                left: 12,
+                right: 12,
+              ), // jarak dari AppBar lebih besar
               child: Align(
                 alignment: Alignment.centerLeft, // biar gak full width
                 child: ConstrainedBox(
@@ -47,8 +49,10 @@ class HomePage extends StatelessWidget {
                         ),
                         filled: true,
                         fillColor: AppColors.surface,
-                        contentPadding:
-                            const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                        contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 12,
+                          vertical: 8,
+                        ),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
                           borderSide: BorderSide(
@@ -72,9 +76,18 @@ class HomePage extends StatelessWidget {
                       dropdownColor: AppColors.background,
                       items: const [
                         DropdownMenuItem(value: "Semua", child: Text("Semua")),
-                        DropdownMenuItem(value: "Tinggi", child: Text("Tinggi")),
-                        DropdownMenuItem(value: "Sedang", child: Text("Sedang")),
-                        DropdownMenuItem(value: "Rendah", child: Text("Rendah")),
+                        DropdownMenuItem(
+                          value: "Tinggi",
+                          child: Text("Tinggi"),
+                        ),
+                        DropdownMenuItem(
+                          value: "Sedang",
+                          child: Text("Sedang"),
+                        ),
+                        DropdownMenuItem(
+                          value: "Rendah",
+                          child: Text("Rendah"),
+                        ),
                       ],
                       onChanged: (val) {
                         if (val != null) controller.changeFilter(val);
@@ -93,7 +106,11 @@ class HomePage extends StatelessWidget {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Icon(Icons.task_alt, size: 80, color: Colors.grey),
+                        const Icon(
+                          Icons.task_alt,
+                          size: 80,
+                          color: Colors.grey,
+                        ),
                         const SizedBox(height: 12),
                         const Text(
                           "Belum ada todo",
@@ -175,7 +192,8 @@ class HomePage extends StatelessWidget {
                                     color: priorityColor,
                                   ),
                                 ),
-                                if (todo['dueDate'] != null && todo['dueDate'] is DateTime)
+                                if (todo['dueDate'] != null &&
+                                    todo['dueDate'] is DateTime)
                                   Row(
                                     children: [
                                       const Icon(
@@ -185,7 +203,9 @@ class HomePage extends StatelessWidget {
                                       ),
                                       const SizedBox(width: 4),
                                       Text(
-                                        controller.dateFormat.format(todo['dueDate']),
+                                        controller.dateFormat.format(
+                                          todo['dueDate'],
+                                        ),
                                         style: const TextStyle(
                                           fontSize: 12,
                                           fontWeight: FontWeight.w500,
@@ -193,7 +213,6 @@ class HomePage extends StatelessWidget {
                                       ),
                                     ],
                                   ),
-
                               ],
                             ),
                           ],
@@ -202,6 +221,12 @@ class HomePage extends StatelessWidget {
                         trailing: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
+                            IconButton(
+                              icon: const Icon(Icons.edit, color: Colors.blue),
+                              onPressed: () {
+                                Get.toNamed(AppRoute.editPage, arguments: index);
+                              },
+                            ),
                             IconButton(
                               icon: const Icon(
                                 Icons.check_circle,
@@ -219,12 +244,16 @@ class HomePage extends StatelessWidget {
                                   AlertDialog(
                                     title: const Text(
                                       "Konfirmasi",
-                                      style: TextStyle(fontWeight: FontWeight.bold),
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                     ),
-                                    content: Text("Yakin ingin menghapus todo '${todo['judul']}'?"),
+                                    content: Text(
+                                      "Yakin ingin menghapus todo '${todo['judul']}'?",
+                                    ),
                                     actions: [
                                       TextButton(
-                                        onPressed: () => Get.back(), 
+                                        onPressed: () => Get.back(),
                                         child: const Text("Batal"),
                                       ),
                                       ElevatedButton(
@@ -234,7 +263,7 @@ class HomePage extends StatelessWidget {
                                         ),
                                         onPressed: () {
                                           controller.hapusTodo(index);
-                                          Get.back(); 
+                                          Get.back();
                                           Get.snackbar(
                                             "Terhapus",
                                             "Todo '${todo['judul']}' dihapus",
@@ -248,7 +277,6 @@ class HomePage extends StatelessWidget {
                                 );
                               },
                             ),
-
                           ],
                         ),
                       ),

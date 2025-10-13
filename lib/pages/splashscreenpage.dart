@@ -1,7 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:to_do_list_app/controllers/splashcontroller.dart';
 
 class SplashscreenPage extends StatelessWidget {
    SplashscreenPage({super.key});

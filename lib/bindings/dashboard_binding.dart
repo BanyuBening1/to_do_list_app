@@ -1,8 +1,10 @@
 import 'package:get/get.dart';
 import 'package:to_do_list_app/controllers/add_todo_controller.dart';
 import 'package:to_do_list_app/controllers/dashboard_controller.dart';
+import 'package:to_do_list_app/controllers/edit_controller.dart';
 import 'package:to_do_list_app/controllers/history_controller.dart';
 import 'package:to_do_list_app/controllers/home_controller.dart';
+import 'package:to_do_list_app/controllers/resposive_controller.dart';
 
 class DashboardBinding extends Bindings {
   @override
@@ -11,6 +13,8 @@ class DashboardBinding extends Bindings {
     Get.lazyPut<HomeController>(() => HomeController(), fenix: true);
     Get.lazyPut<AddTodoController>(() => AddTodoController(), fenix: true);
     Get.lazyPut<HistoryController>(() => HistoryController(), fenix: true);
+    Get.lazyPut<EditController>(() => EditController(), fenix: true);
+    Get.lazyPut<ResponsiveController>(() => ResponsiveController(), fenix: true);
   }
 }
 

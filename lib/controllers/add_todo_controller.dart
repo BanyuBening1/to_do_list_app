@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:to_do_list_app/controllers/home_controller.dart';
 import 'package:to_do_list_app/db_helper.dart';
+import 'package:to_do_list_app/models/todo.dart';
 
 class AddTodoController extends GetxController {
   var judul = ''.obs;
@@ -34,19 +35,20 @@ class AddTodoController extends GetxController {
       return;
     }
 
-    Map<String, dynamic> newTodo = {
-      "judul": judul.value,
-      "deskripsi": deskripsi.value,
-      "kategori": kategori.value,
-      "prioritas": priority.value,
-      "dueDate": dueDate.value!.toIso8601String(),
-      "selesai": 0,
-    };
+    final todo = Todo(
+      judul: judul.value,
+      deskripsi: deskripsi.value,
+      kategori: kategori.value,
+      prioritas: priority.value,
+      dueDate: dueDate.value,
+      selesai: false,
+    );
 
-    int id = await dbHelper.insertTodo(newTodo);
+    int id = await dbHelper.insertTodo(todo.toMap());
+    todo.id = id;
 
     final home = Get.find<HomeController>();
-    home.tambahTodo({"id": id, ...newTodo, "dueDate": dueDate.value});
+    home.tambahTodo(todo);
     Get.back();
   }
 }

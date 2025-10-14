@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:to_do_list_app/components/app_color.dart';
 import 'package:to_do_list_app/controllers/home_controller.dart';
+import 'package:to_do_list_app/models/todo.dart';
 import 'package:to_do_list_app/routes/routes.dart';
 
 class HomeWideScreen extends StatelessWidget {
@@ -17,9 +18,6 @@ class HomeWideScreen extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // -------------------------------
-            // Sidebar kiri: Filter & tombol tambah
-            // -------------------------------
             Container(
               width: 280,
               height: double.infinity,
@@ -37,7 +35,6 @@ class HomeWideScreen extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 30),
-
                   Obx(
                     () => DropdownButtonFormField<String>(
                       value: controller.filterPrioritas.value,
@@ -57,18 +54,25 @@ class HomeWideScreen extends StatelessWidget {
                       dropdownColor: AppColors.background,
                       items: const [
                         DropdownMenuItem(value: "Semua", child: Text("Semua")),
-                        DropdownMenuItem(value: "Tinggi", child: Text("Tinggi")),
-                        DropdownMenuItem(value: "Sedang", child: Text("Sedang")),
-                        DropdownMenuItem(value: "Rendah", child: Text("Rendah")),
+                        DropdownMenuItem(
+                          value: "Tinggi",
+                          child: Text("Tinggi"),
+                        ),
+                        DropdownMenuItem(
+                          value: "Sedang",
+                          child: Text("Sedang"),
+                        ),
+                        DropdownMenuItem(
+                          value: "Rendah",
+                          child: Text("Rendah"),
+                        ),
                       ],
                       onChanged: (val) {
                         if (val != null) controller.changeFilter(val);
                       },
                     ),
                   ),
-
                   const Spacer(),
-
                   SizedBox(
                     width: double.infinity,
                     child: ElevatedButton.icon(
@@ -90,10 +94,6 @@ class HomeWideScreen extends StatelessWidget {
                 ],
               ),
             ),
-
-            // -------------------------------
-            // Konten kanan: Daftar Todo
-            // -------------------------------
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.all(20),
@@ -123,148 +123,164 @@ class HomeWideScreen extends StatelessWidget {
                     );
                   }
 
-                  final todos = controller.getFilteredTodos();
+                  final List<Todo> todos = controller.getFilteredTodos();
 
                   return GridView.builder(
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      crossAxisSpacing: 16,
-                      mainAxisSpacing: 16,
-                      childAspectRatio: 3.2,
-                    ),
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          crossAxisSpacing: 16,
+                          mainAxisSpacing: 16,
+                          childAspectRatio: 3.2,
+                        ),
                     itemCount: todos.length,
                     itemBuilder: (context, index) {
                       final todo = todos[index];
-                      final priorityColor =
-                          controller.getPriorityColor(todo['prioritas']);
+                      final priorityColor = controller.getPriorityColor(
+                        todo.prioritas,
+                      );
+                      final categoryColor = controller.getPriorityColor(
+                        todo.kategori ?? 'Lainnya',
+                      );
 
                       return Card(
-                        color: Colors.white,
+                        color: Colors.white.withOpacity(0.9),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(16),
                         ),
                         elevation: 3,
-                        child: Padding(
-                          padding: const EdgeInsets.all(16),
-                          child: SingleChildScrollView(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                // Judul + tombol hapus
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Expanded(
-                                      child: Text(
-                                        todo['judul'],
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 16,
-                                          color: AppColors.primary,
-                                          decoration: todo['selesai'] == true
-                                              ? TextDecoration.lineThrough
-                                              : TextDecoration.none,
-                                        ),
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                    ),
-                                    IconButton(
-                              icon: const Icon(
-                                Icons.check_circle,
-                                color: Colors.green,
-                              ),
-                              onPressed: () => controller.selesaikanTodo(index),
+                        margin: const EdgeInsets.symmetric(
+                          horizontal: 12,
+                          vertical: 6,
+                        ),
+                        child: ListTile(
+                          title: Text(
+                            todo.judul,
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: AppColors.primary,
+                              decoration: todo.selesai
+                                  ? TextDecoration.lineThrough
+                                  : TextDecoration.none,
                             ),
-                             IconButton(
-                              icon: const Icon(Icons.edit, color: Colors.blue),
-                              onPressed: () {
-                                Get.toNamed(AppRoute.editPage, arguments: index);
-                              },
-                            ),        
-                                    IconButton(
-                                      icon: const Icon(Icons.delete,
-                                          color: Color(0xFFF08787)),
-                               onPressed: () {
-                                Get.dialog(
-                                  AlertDialog(
-                                    title: const Text(
-                                      "Konfirmasi",
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                      ),
+                          ),
+                          subtitle: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                todo.deskripsi,
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                                style: const TextStyle(fontSize: 13),
+                              ),
+                              const SizedBox(height: 6),
+                              Wrap(
+                                spacing: 12,
+                                runSpacing: 4,
+                                children: [
+
+                                  Text(
+                                    "Prioritas: ${todo.prioritas}",
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.bold,
+                                      color: priorityColor,
                                     ),
-                                    content: Text(
-                                      "Yakin ingin menghapus todo '${todo['judul']}'?",
-                                    ),
-                                    actions: [
-                                      TextButton(
-                                        onPressed: () => Get.back(),
-                                        child: const Text("Batal"),
-                                      ),
-                                      ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                          backgroundColor: Colors.redAccent,
-                                          foregroundColor: Colors.white,
-                                        ),
-                                        onPressed: () {
-                                          controller.hapusTodo(index);
-                                          Get.back();
-                                          Get.snackbar(
-                                            "Terhapus",
-                                            "Todo '${todo['judul']}' dihapus",
-                                            snackPosition: SnackPosition.BOTTOM,
-                                          );
-                                        },
-                                        child: const Text("Ya, Hapus"),
-                                      ),
-                                    ],
                                   ),
-                                );
-                              },
-                                      
-                                    ),
-                                  ],
-                                ),
-
-                                const SizedBox(height: 8),
-
-                                // Deskripsi
-                                Text(
-                                  todo['deskripsi'] ?? '',
-                                  maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: const TextStyle(fontSize: 14),
-                                ),
-
-                                const SizedBox(height: 8),
-
-                                // Prioritas + tanggal
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      "Prioritas: ${todo['prioritas']}",
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        color: priorityColor,
-                                      ),
-                                    ),
-                                    if (todo['dueDate'] != null &&
-                                        todo['dueDate'] is DateTime)
-                                      Text(
-                                        controller.dateFormat
-                                            .format(todo['dueDate']),
-                                        style: const TextStyle(
-                                          fontSize: 12,
+                                  if (todo.dueDate != null)
+                                    Row(
+                                      children: [
+                                        const Icon(
+                                          Icons.calendar_today,
+                                          size: 14,
                                           color: Colors.grey,
                                         ),
-                                      ),
-                                  ],
+                                        const SizedBox(width: 4),
+                                        Text(
+                                          controller.dateFormat.format(
+                                            todo.dueDate!,
+                                          ),
+                                          style: const TextStyle(
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                ],
+                              ),
+                            ],
+                          ),
+                          isThreeLine: true,
+                          trailing: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              IconButton(
+                                icon: const Icon(
+                                  Icons.edit,
+                                  color: Colors.blue,
                                 ),
-                              ],
-                            ),
+                                onPressed: () {
+                                  Get.toNamed(
+                                    AppRoute.editPage,
+                                    arguments: todo.id,
+                                  );
+                                },
+                              ),
+                              IconButton(
+                                icon: const Icon(
+                                  Icons.check_circle,
+                                  color: Colors.green,
+                                ),
+                                onPressed: () =>
+                                    controller.selesaikanTodo(todo.id!),
+                              ),
+                              IconButton(
+                                icon: const Icon(
+                                  Icons.delete,
+                                  color: Color(0xFFF08787),
+                                ),
+                                onPressed: () {
+                                  Get.dialog(
+                                    AlertDialog(
+                                      title: const Text(
+                                        "Konfirmasi",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      content: Text(
+                                        "Yakin ingin menghapus todo '${todo.judul}'?",
+                                      ),
+                                      actions: [
+                                        TextButton(
+                                          onPressed: () => Get.back(),
+                                          child: const Text("Batal"),
+                                        ),
+                                        ElevatedButton(
+                                          style: ElevatedButton.styleFrom(
+                                            backgroundColor: Colors.redAccent,
+                                            foregroundColor: Colors.white,
+                                          ),
+                                          onPressed: () {
+                                            controller.hapusTodo(todo.id!);
+                                            Get.back();
+                                            Get.snackbar(
+                                              "Terhapus",
+                                              "Todo '${todo.judul}' dihapus",
+                                              snackPosition:
+                                                  SnackPosition.BOTTOM,
+                                            );
+                                          },
+                                          child: const Text("Ya, Hapus"),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                },
+                              ),
+                            ],
                           ),
                         ),
                       );

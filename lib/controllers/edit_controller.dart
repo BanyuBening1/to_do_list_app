@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:to_do_list_app/controllers/home_controller.dart';
 import 'package:to_do_list_app/db_helper.dart';
+import 'package:to_do_list_app/models/todo.dart';
 
 class EditController extends GetxController {
-  late int index;
-  late Map<String, dynamic> todo;
+  late int todoId;
+  late Todo todo;
   final HomeController homeController = Get.find<HomeController>();
   final DbHelper dbHelper = DbHelper.instance;
 
@@ -18,14 +19,17 @@ class EditController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    index = Get.arguments as int;
-    todo = Map.from(homeController.todos[index]);
+    todoId = Get.arguments as int;
+    todo = homeController.todos.firstWhere(
+      (t) => t.id == todoId,
+      orElse: () => throw Exception("Todo tidak ditemukan"),
+    );
 
-    judulController.text = todo['judul'];
-    deskripsiController.text = todo['deskripsi'];
-    kategori.value = todo['kategori'];
-    priority.value = todo['prioritas'];
-    dueDate.value = todo['dueDate'];
+    judulController.text = todo.judul;
+    deskripsiController.text = todo.deskripsi;
+    kategori.value = todo.kategori;
+    priority.value = todo.prioritas;
+    dueDate.value = todo.dueDate;
   }
 
   Future<void> pilihTanggal(BuildContext context) async {
@@ -50,24 +54,19 @@ class EditController extends GetxController {
       return;
     }
 
-    final updatedTodo = {
-      'id': todo['id'],
-      'judul': judulController.text,
-      'deskripsi': deskripsiController.text,
-      'kategori': kategori.value,
-      'prioritas': priority.value,
-      'dueDate': dueDate.value?.toIso8601String(),
-      'selesai': todo['selesai'] == true ? 1 : 0,
-    };
+    todo.judul = judulController.text;
+    todo.deskripsi = deskripsiController.text;
+    todo.kategori = kategori.value;
+    todo.prioritas = priority.value;
+    todo.dueDate = dueDate.value;
 
-    await dbHelper.updateTodo(updatedTodo);
+    await dbHelper.updateTodo(todo.toMap());
 
-    homeController.todos[index] = {
-      ...updatedTodo,
-      'selesai': todo['selesai'] == true,
-      'dueDate': dueDate.value,
-    };
-    homeController.todos.refresh();
+    int index = homeController.todos.indexWhere((t) => t.id == todoId);
+    if (index != -1) {
+      homeController.todos[index] = todo;
+      homeController.todos.refresh();
+    }
 
     Get.back();
   }

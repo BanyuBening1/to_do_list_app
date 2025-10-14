@@ -4,14 +4,13 @@ import 'package:to_do_list_app/bindings/dashboard_binding.dart';
 import 'package:to_do_list_app/routes/pages.dart';
 import 'package:to_do_list_app/routes/routes.dart';
 
-void main() {
+void main() async {
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(

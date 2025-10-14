@@ -1,5 +1,6 @@
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
+import 'package:to_do_list_app/models/todo.dart';
 
 class DbHelper {
   static final DbHelper instance = DbHelper._init();
@@ -35,12 +36,14 @@ class DbHelper {
 
   Future<int> insertTodo(Map<String, dynamic> todo) async {
     final db = await instance.database;
+    todo.remove('id'); 
     return await db.insert('todo', todo);
   }
 
-  Future<List<Map<String, dynamic>>> getTodos() async {
+  Future<List<Todo>> getTodos() async {
     final db = await instance.database;
-    return await db.query('todo', orderBy: 'id DESC');
+    final result = await db.query('todo', orderBy: 'id DESC');
+    return result.map((e) => Todo.fromMap(e)).toList();
   }
 
   Future<int> updateTodo(Map<String, dynamic> todo) async {
@@ -53,4 +56,5 @@ class DbHelper {
     final db = await instance.database;
     return await db.delete('todo', where: 'id = ?', whereArgs: [id]);
   }
+
 }

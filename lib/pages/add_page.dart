@@ -1,11 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:to_do_list_app/components/app_color.dart';
-import 'package:to_do_list_app/components/custom_button.dart';
-import 'package:to_do_list_app/components/custom_dropdown.dart';
-import 'package:to_do_list_app/components/custom_textfield.dart';
-import 'package:to_do_list_app/controllers/add_todo_controller.dart';
 import 'package:to_do_list_app/controllers/resposive_controller.dart';
 import 'package:to_do_list_app/pages/Responsive%20UI/Add/add_mobile.dart';
 import 'package:to_do_list_app/pages/Responsive%20UI/Add/add_wide.dart';

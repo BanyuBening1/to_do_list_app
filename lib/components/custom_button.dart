@@ -6,7 +6,7 @@ class CustomButton extends StatelessWidget {
   final VoidCallback onPressed;
   final Color backgroundColor;
   final Color textColor;
-  final bool expandWidth; // Tambahkan parameter ini
+  final bool expandWidth; 
 
   const CustomButton({
     super.key,
@@ -14,7 +14,7 @@ class CustomButton extends StatelessWidget {
     required this.onPressed,
     this.backgroundColor = AppColors.primary,
     this.textColor = AppColors.textLight,
-    this.expandWidth = true, // Default true untuk backward compatibility
+    this.expandWidth = true, 
   });
 
   @override

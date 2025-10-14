@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:to_do_list_app/db_helper.dart';
+import 'package:to_do_list_app/models/todo.dart';
 
 class HomeController extends GetxController {
-  var todos = <Map<String, dynamic>>[].obs;
-  var history = <Map<String, dynamic>>[].obs;
+  var todos = <Todo>[].obs;
+  var history = <Todo>[].obs;
 
   var filterPrioritas = "Semua".obs;
 
@@ -18,86 +19,58 @@ class HomeController extends GetxController {
     loadTodos();
   }
 
-  void loadTodos() async {
+  Future<void> loadTodos() async {
     final data = await dbHelper.getTodos();
-    todos.assignAll(
-      data.map((todo) {
-        final mutableTodo = Map<String, dynamic>.from(
-          todo,
-        ); // salinan agar bisa diubah
-        if (mutableTodo['dueDate'] != null &&
-            mutableTodo['dueDate'] is String) {
-          mutableTodo['dueDate'] = DateTime.tryParse(mutableTodo['dueDate']);
-        }
-        mutableTodo['selesai'] = mutableTodo['selesai'] == 1 ? true : false;
-        return mutableTodo;
-      }).toList(),
-    );
+
+    final activeTodos = data.where((t) => t.selesai == false).toList();
+    final completedTodos = data.where((t) => t.selesai == true).toList();
+
+    todos.assignAll(activeTodos);
+    history.assignAll(completedTodos);
   }
 
-  void tambahTodo(Map<String, dynamic> todo) async {
-    int id = await dbHelper.insertTodo({
-      'judul': todo['judul'],
-      'deskripsi': todo['deskripsi'],
-      'kategori': todo['kategori'],
-      'prioritas': todo['prioritas'],
-      'dueDate': todo['dueDate']?.toIso8601String(),
-      'selesai': 0,
-    });
-    final newTodo = Map<String, dynamic>.from(todo);
-    newTodo['id'] = id;
-    newTodo['selesai'] = false;
-    todos.add(newTodo);
+  void tambahTodo(Todo todo) {
+    todos.add(todo);
+    todos.refresh();
   }
 
-  void hapusTodo(int index) async {
-    int id = todos[index]['id'];
+  Future<void> hapusTodo(int id) async {
     await dbHelper.deleteTodo(id);
-    todos.removeAt(index);
+    todos.removeWhere((todo) => todo.id == id);
+    todos.refresh();
   }
 
-  void selesaikanTodo(int index) async {
-    final todo = Map<String, dynamic>.from(todos[index]);
-    todo['selesai'] = true;
-    history.add(todo);
+  Future<void> selesaikanTodo(int id) async {
+    try {
+      final todoIndex = todos.indexWhere((t) => t.id == id);
+      if (todoIndex == -1) return;
 
-    await dbHelper.updateTodo({
-      'id': todo['id'],
-      'judul': todo['judul'],
-      'deskripsi': todo['deskripsi'],
-      'kategori': todo['kategori'],
-      'prioritas': todo['prioritas'],
-      'dueDate': todo['dueDate']?.toIso8601String(),
-      'selesai': 1,
-    });
+      final todo = todos[todoIndex];
+      todo.selesai = true;
 
-    todos.removeAt(index);
-  }
+      await dbHelper.updateTodo({
+        'id': todo.id,
+        'judul': todo.judul,
+        'deskripsi': todo.deskripsi,
+        'kategori': todo.kategori,
+        'prioritas': todo.prioritas,
+        'dueDate': todo.dueDate?.toIso8601String(),
+        'selesai': 1,
+      });
 
-  String? formatDueDate(dynamic rawDate) {
-    if (rawDate == null) return null;
+      todos.removeAt(todoIndex);
+      history.add(todo);
 
-    DateTime? parsed;
-    if (rawDate is DateTime) {
-      parsed = rawDate;
-    } else if (rawDate is String) {
-      try {
-        parsed = DateTime.parse(rawDate);
-      } catch (_) {
-        return null;
-      }
-    }
-
-    return parsed != null ? dateFormat.format(parsed) : null;
+      todos.refresh();
+      history.refresh();
+    } catch (e) {}
   }
 
   bool isTodoEmpty() => todos.isEmpty;
 
-  List<Map<String, dynamic>> getFilteredTodos() {
-    if (filterPrioritas.value == "Semua") {
-      return todos;
-    }
-    return todos.where((t) => t['prioritas'] == filterPrioritas.value).toList();
+  List<Todo> getFilteredTodos() {
+    if (filterPrioritas.value == "Semua") return todos;
+    return todos.where((t) => t.prioritas == filterPrioritas.value).toList();
   }
 
   void changeFilter(String val) {

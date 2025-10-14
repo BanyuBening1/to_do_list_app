@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:to_do_list_app/components/app_color.dart';
 import 'package:to_do_list_app/controllers/home_controller.dart';
 import 'package:to_do_list_app/routes/routes.dart';
+import 'package:to_do_list_app/models/todo.dart';
 
 class HomeMobile extends StatelessWidget {
   final HomeController controller = Get.find<HomeController>();
@@ -23,19 +24,12 @@ class HomeMobile extends StatelessWidget {
         decoration: const BoxDecoration(color: AppColors.background),
         child: Column(
           children: [
-            // Dropdown filter prioritas
             Padding(
-              padding: const EdgeInsets.only(
-                top: 16,
-                left: 12,
-                right: 12,
-              ), // jarak dari AppBar lebih besar
+              padding: const EdgeInsets.only(top: 16, left: 12, right: 12),
               child: Align(
-                alignment: Alignment.centerLeft, // biar gak full width
+                alignment: Alignment.centerLeft,
                 child: ConstrainedBox(
-                  constraints: const BoxConstraints(
-                    maxWidth: 200, // atur lebar maksimum dropdown
-                  ),
+                  constraints: const BoxConstraints(maxWidth: 200),
                   child: Obx(
                     () => DropdownButtonFormField<String>(
                       value: controller.filterPrioritas.value,
@@ -97,22 +91,16 @@ class HomeMobile extends StatelessWidget {
                 ),
               ),
             ),
-
-            // Daftar Todo
             Expanded(
               child: Obx(() {
                 if (controller.isTodoEmpty()) {
                   return Center(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Icon(
-                          Icons.task_alt,
-                          size: 80,
-                          color: Colors.grey,
-                        ),
-                        const SizedBox(height: 12),
-                        const Text(
+                      children: const [
+                        Icon(Icons.task_alt, size: 80, color: Colors.grey),
+                        SizedBox(height: 12),
+                        Text(
                           "Belum ada todo",
                           style: TextStyle(
                             fontSize: 16,
@@ -120,8 +108,8 @@ class HomeMobile extends StatelessWidget {
                             color: AppColors.textDark,
                           ),
                         ),
-                        const SizedBox(height: 8),
-                        const Text(
+                        SizedBox(height: 8),
+                        Text(
                           "Tambahkan tugas baru dengan menekan tombol +",
                           style: TextStyle(fontSize: 13, color: Colors.grey),
                           textAlign: TextAlign.center,
@@ -136,9 +124,9 @@ class HomeMobile extends StatelessWidget {
                 return ListView.builder(
                   itemCount: todos.length,
                   itemBuilder: (context, index) {
-                    final todo = todos[index];
+                    final Todo todo = todos[index];
                     final priorityColor = controller.getPriorityColor(
-                      todo['prioritas'],
+                      todo.prioritas,
                     );
 
                     return Card(
@@ -153,12 +141,12 @@ class HomeMobile extends StatelessWidget {
                       ),
                       child: ListTile(
                         title: Text(
-                          todo['judul'],
+                          todo.judul,
                           style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
                             color: AppColors.primary,
-                            decoration: todo['selesai'] == true
+                            decoration: todo.selesai
                                 ? TextDecoration.lineThrough
                                 : TextDecoration.none,
                           ),
@@ -167,7 +155,7 @@ class HomeMobile extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              todo['deskripsi'],
+                              todo.deskripsi,
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
                               style: const TextStyle(fontSize: 13),
@@ -178,22 +166,21 @@ class HomeMobile extends StatelessWidget {
                               runSpacing: 4,
                               children: [
                                 Text(
-                                  "Kategori: ${todo['kategori']}",
+                                  "Kategori: ${todo.kategori}",
                                   style: const TextStyle(
                                     fontSize: 12,
                                     color: Colors.grey,
                                   ),
                                 ),
                                 Text(
-                                  "Prioritas: ${todo['prioritas']}",
+                                  "Prioritas: ${todo.prioritas}",
                                   style: TextStyle(
                                     fontSize: 12,
                                     fontWeight: FontWeight.bold,
                                     color: priorityColor,
                                   ),
                                 ),
-                                if (todo['dueDate'] != null &&
-                                    todo['dueDate'] is DateTime)
+                                if (todo.dueDate != null)
                                   Row(
                                     children: [
                                       const Icon(
@@ -204,7 +191,7 @@ class HomeMobile extends StatelessWidget {
                                       const SizedBox(width: 4),
                                       Text(
                                         controller.dateFormat.format(
-                                          todo['dueDate'],
+                                          todo.dueDate!,
                                         ),
                                         style: const TextStyle(
                                           fontSize: 12,
@@ -224,7 +211,10 @@ class HomeMobile extends StatelessWidget {
                             IconButton(
                               icon: const Icon(Icons.edit, color: Colors.blue),
                               onPressed: () {
-                                Get.toNamed(AppRoute.editPage, arguments: index);
+                                Get.toNamed(
+                                  AppRoute.editPage,
+                                  arguments: todo.id,
+                                );
                               },
                             ),
                             IconButton(
@@ -232,7 +222,9 @@ class HomeMobile extends StatelessWidget {
                                 Icons.check_circle,
                                 color: Colors.green,
                               ),
-                              onPressed: () => controller.selesaikanTodo(index),
+                              onPressed: () =>
+                                  controller.selesaikanTodo(todo.id!),
+
                             ),
                             IconButton(
                               icon: const Icon(
@@ -249,7 +241,7 @@ class HomeMobile extends StatelessWidget {
                                       ),
                                     ),
                                     content: Text(
-                                      "Yakin ingin menghapus todo '${todo['judul']}'?",
+                                      "Yakin ingin menghapus todo '${todo.judul}'?",
                                     ),
                                     actions: [
                                       TextButton(
@@ -262,11 +254,11 @@ class HomeMobile extends StatelessWidget {
                                           foregroundColor: Colors.white,
                                         ),
                                         onPressed: () {
-                                          controller.hapusTodo(index);
+                                          controller.hapusTodo(todo.id!);
                                           Get.back();
                                           Get.snackbar(
                                             "Terhapus",
-                                            "Todo '${todo['judul']}' dihapus",
+                                            "Todo '${todo.judul}' dihapus",
                                             snackPosition: SnackPosition.BOTTOM,
                                           );
                                         },

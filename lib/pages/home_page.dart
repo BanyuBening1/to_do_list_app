@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:to_do_list_app/components/app_color.dart';
 import 'package:to_do_list_app/controllers/home_controller.dart';
 import 'package:to_do_list_app/controllers/resposive_controller.dart';
 import 'package:to_do_list_app/pages/Responsive%20UI/Home/home_mobile.dart';
 import 'package:to_do_list_app/pages/Responsive%20UI/Home/home_wide.dart';
-import 'package:to_do_list_app/routes/routes.dart';
+
 
 class HomePage extends StatelessWidget {
       final ResponsiveController responsiveController =
